@@ -1,7 +1,14 @@
-# Phishing Report v0.1
-# Copyright Netscylla 2018
-# Version 0.1 10/12/2018
-# Used to collect email artifacts in specific OWA folder, currently: Email address, Name 
+<#
+.Synopsis
+Phishing Report v0.1
+
+Author: Andy @ Netscylla (c) 2018
+License: GNU GPL v3
+Version: v0.1
+
+.Description
+Simple script to collect email artifacts in specific OWA folder, currently: Email address, Name 
+#>
 
 $outlook = new-object -com outlook.application;
 $ns = $outlook.GetNameSpace("MAPI");
