@@ -19,17 +19,25 @@ $ns = $outlook.GetNameSpace("MAPI");
 $inbox = $ns.Folders.Item(3).Folders.Item(6)
 
 $inbox.items | foreach {
-
-    # convert Exchange user account into human readable smtp email address
     if ($_.SenderEmailType.ToUpper().Equals("EX")){
-        $recip = $ns.CreateRecipient($_.SenderName);
-        $exUser = $recip.AddressEntry.GetExchangeUser();
-        $smtpAddress = $exUser.PrimarySmtpAddress;
+      $recip = $ns.CreateRecipient($_.SenderName);
+      #if address entry exists continue
+      if ($recip.AddressEntry){     
+          $exUser = $recip.AddressEntry.GetExchangeUser();
+          $smtpAddress = $exUser.PrimarySmtpAddress;
+      }else{
+          #if address entry == null, guess at email address from name firstname.surname
+          $namearray=@()
+          $namearray=$_.SenderName.Split(" ,",[System.StringSplitOptions]::RemoveEmptyEntries)
+          [array]::Reverse($namearray)
+          $email_prefix= $namearray -Join "."
+          $smtpAddress=$email_prefix + "@domain.com"
+      }
     }else{
-        $smtpAddress = $_.SenderEmailAddress;
+      $smtpAddress = $_.SenderEmailAddress;
     }
-    # you may want to comment this out depending on reporting requirements?
-    "$smtpAddress,$($_.SenderName)" | out-file c:\Temp\Report.csv -Append
+    "$smtpAddress,$($_.SenderName)" | out-file h:\test2.csv -Append
+    $smtpAddress=""
 }
-#uncomment if you want Powershell to dump a table
+
 #$inbox.items| Select SenderEmailAddress,SenderName |Format-Table -AutoSize
