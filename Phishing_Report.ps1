@@ -26,7 +26,7 @@ $inbox.items | foreach {
         $exUser = $recip.AddressEntry.GetExchangeUser();
         $smtpAddress = $exUser.PrimarySmtpAddress;
     }else{
-        $smtpAddress = mi.SenderEmailAddress;
+        $smtpAddress = $_.SenderEmailAddress;
     }
     # you may want to comment this out depending on reporting requirements?
     "$smtpAddress,$($_.SenderName)" | out-file c:\Temp\Report.csv -Append
