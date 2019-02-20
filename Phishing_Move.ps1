@@ -67,7 +67,7 @@ $restricteditems=$inbox.items.Restrict("[Unread] = true")
 for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
   if ($restricteditems.item($inc).Subject -match $bad_string){
     try{
-      write-host "Moving mail to IPR, mail from:", $restricteditems.item($inc).SenderName
+      write-host "Moving mail to triage folder, mail from:", $restricteditems.item($inc).SenderName
       [void]$restricteditems.item($inc).Move($mvbox)
     }catch{
       write-host "failed to move mail from:", $restricteditems.item($inc).SenderName
@@ -75,7 +75,7 @@ for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
   }
   if(($restricteditems.item($inc).Attachments|select FileName) -match $bad_string){
     try{
-      write-host "Moving mail to IPR, mail from:", $restricteditems.item($inc).SenderName
+      write-host "Moving mail to triage folder, mail from:", $restricteditems.item($inc).SenderName
       [void]$restricteditems.item($inc).Move($mvbox)
     }catch{
       write-host "failed to move mail from:", $restricteditems.item($inc).SenderName
