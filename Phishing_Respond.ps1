@@ -72,6 +72,7 @@ $restricteditems=$inbox.items.Restrict("[Unread] = true")
  
 
 for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
+  #match subject name
   if ($restricteditems.item($inc).Subject -match $bad_string){
     try{
       $replymail= (($ns.CreateRecipient( $restricteditems.item($inc).SenderEmailAddress )).AddressEntry.GetExchangeUser()).PrimarySmtpAddress; 
@@ -82,6 +83,7 @@ for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
     }
   }
 
+  #match subject name as mail attachment
   try{ 
     if(($restricteditems.item($inc).Attachments|select FileName) -match $bad_string){
       try{
@@ -94,6 +96,7 @@ for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
     }
   }catch {}
 
+  #remove COM objects in reply string, and concatenate all email addresses tracked
   if ($replaymail -notcontains "Microsoft.Office"){
     $senderslist += $replymail + ";"
   }
