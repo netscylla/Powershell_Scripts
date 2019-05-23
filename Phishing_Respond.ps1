@@ -85,7 +85,7 @@ for ($inc=$restricteditems.count; $inc -gt 0 ; $inc--){
 
   #match subject name as mail attachment
   try{ 
-    if(($restricteditems.item($inc).Attachments|select FileName) -match $bad_string){
+    if(($restricteditems.item($inc).Attachments|select DisplayName) -match $bad_string){
       try{
         $replymail= (($ns.CreateRecipient( $restricteditems.item($inc).SenderEmailAddress )).AddressEntry.GetExchangeUser()).PrimarySmtpAddress; 
         write-host "Moving mail to IPR, mail from:", $restricteditems.item($inc).SenderName
